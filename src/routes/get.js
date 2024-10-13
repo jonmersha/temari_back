@@ -14,7 +14,7 @@ const callFunc = require("../db/call_backs");
  *
  */
 //return All data of the given table
-console.log(table[0]);
+//console.log(table[0]);
 router.get(
   "/data/:tableId",
   apiKeyMiddleware.apiKeyMiddleware,
