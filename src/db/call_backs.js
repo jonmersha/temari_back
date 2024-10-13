@@ -13,7 +13,7 @@ function getData(stm, res) {
 function DBO(stm, res, message) {
   db.fetchDataFromMySQL(stm, (error, results) => {
     if (error) {
-      res.status(500).json({ error: message });
+      res.status(500).json({ error: error });
     } else {
       res.json({ Data: results });
     }
