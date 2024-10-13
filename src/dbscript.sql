@@ -91,3 +91,94 @@ VALUES
 
 -- Grade 5 English Language
 ('English Language Grade 5', 'EnglishLanguageGrade5', 5, 'Textbook for Grade 5', '978-5555555003', 'text_book/en5', 1,1, NOW(), NOW());
+
+CREATE TABLE `users` (
+  `user_id` int(11) int primary key AUTO_INCREMENT NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `email` varchar(100) unique NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `first_name` varchar(100) DEFAULT NULL,
+  `last_name` varchar(100) DEFAULT NULL,
+  `phone` varchar(15) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `city` varchar(100) DEFAULT NULL,
+  `state` varchar(100) DEFAULT NULL,
+  `country` varchar(100) DEFAULT NULL,
+  `postal_code` varchar(10) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+)
+
+CREATE TABLE promotions (
+    promotion_id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    image_url VARCHAR(255),
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE news (
+    news_id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    publish_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE book_read_history (
+    history_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    book_id INT,
+    last_page_read INT,
+    read_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (book_id) REFERENCES textbooks(id) ON DELETE CASCADE
+);
+
+
+INSERT INTO `textbooks`(
+    `id`,
+    `title`,
+    `subject`,
+    `grade`,
+    `description`,
+    `isbn`,
+    `image_url`,
+    `book_url`,
+    `provider_id`,
+    `region_id`,
+    `created_at`,
+    `updated_at`
+)
+VALUES(
+    NULL,
+    '5ኛ ክፍል ሥነ ጠጥበብ',
+    'visual_art_oromia_grade5',
+    '5',
+    'Og Arti',
+    '911',
+    'text_book/pdf/oromia/grade5/5ኛ_ክፍል_ሥነ_ጠጥበብ_አድስ_merged_compressed.pdf',
+    'text_book/pdf/oromia/grade5/5ኛ_ክፍል_ሥነ_ጠጥበብ_አድስ_merged_compressed.pdf',
+    '3',
+    '2',
+    CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
+
+
+
+    CREATE TABLE news (
+    news_id INT PRIMARY KEY AUTO_INCREMENT,           -- Unique identifier for each news entry
+    title VARCHAR(255) NOT NULL,          -- Title of the news
+    content TEXT NOT NULL,                -- Full content of the news
+    author VARCHAR(100),                  -- Name of the author
+    publication_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Date the news was published
+    image_url VARCHAR(255),               -- URL of an image related to the news
+    category VARCHAR(100),                -- Category or section of the news (e.g., sports, politics)
+    is_published BOOLEAN DEFAULT FALSE,   -- Whether the news is published or not
+    views INT DEFAULT 0                   -- Number of views
+);
+
+INSERT INTO `edu_news` (`news_id`, `title`, `content`, `author`, `publication_date`, `image_url`, `category`, `is_published`, `views`) VALUES (NULL, 'Test Missage', 'Message body', 'Edu Office', current_timestamp(), 'asset/addi.png', 'Edu', '1', '0');
