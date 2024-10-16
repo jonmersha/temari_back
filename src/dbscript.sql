@@ -129,15 +129,6 @@ CREATE TABLE news (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE book_read_history (
-    history_id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT,
-    book_id INT,
-    last_page_read INT,
-    read_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (book_id) REFERENCES textbooks(id) ON DELETE CASCADE
-);
 
 
 INSERT INTO `textbooks`(
@@ -182,3 +173,72 @@ VALUES(
 );
 
 INSERT INTO `edu_news` (`news_id`, `title`, `content`, `author`, `publication_date`, `image_url`, `category`, `is_published`, `views`) VALUES (NULL, 'Test Missage', 'Message body', 'Edu Office', current_timestamp(), 'asset/addi.png', 'Edu', '1', '0');
+
+
+
+
+
+CREATE TABLE book_read_history (
+    history_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    book_id INT,
+    last_page_read INT,
+    read_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (book_id) REFERENCES textbooks(id) ON DELETE CASCADE
+);
+
+CREATE TABLE `users` (
+  `user_id` int(11) int primary key AUTO_INCREMENT NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `email` varchar(100) unique NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `first_name` varchar(100) DEFAULT NULL,
+  `last_name` varchar(100) DEFAULT NULL,
+  `phone` varchar(15) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `city` varchar(100) DEFAULT NULL,
+  `state` varchar(100) DEFAULT NULL,
+  `country` varchar(100) DEFAULT NULL,
+  `postal_code` varchar(10) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+);
+
+CREATE TABLE textbooks (
+    id INT PRIMARY KEY AUTO_INCREMENT,             
+    title VARCHAR(255) NOT NULL,       
+    subject VARCHAR(255) NOT NULL,     
+    grade INT NOT NULL,                
+    description TEXT,                  -- Optional description of the textbook
+    isbn VARCHAR(20),                  -- Optional ISBN number
+    image_url TEXT,                    -- URL for the textbook's cover image
+    provider_id INT REFERENCES providers(id) ON DELETE SET NULL, -- Foreign key to the 'providers' table
+    region_id INT REFERENCES regions(id) ON DELETE SET NULL,     -- Foreign key to the 'regions' table
+    created_at TIMESTAMP DEFAULT NOW(),-- Timestamp of record creation
+    updated_at TIMESTAMP DEFAULT NOW() -- Timestamp of the last update
+);
+
+
+CREATE VIEW reading_history_view AS SELECT brh.history_id, -- Reading history ID brh.user_id, -- User ID u.username, -- User's username u.first_name, -- User's first name u.last_name, -- User's last name brh.book_id, -- Book ID tb.title AS book_title, -- Book title tb.subject AS book_subject, -- Book subject tb.grade AS book_grade, -- Book grade level tb.image_url AS book_image, -- Book cover image URL brh.last_page_read, -- The last page read by the user brh.read_date -- The date when the user read the book FROM book_read_history brh JOIN users u ON brh.user_id = u.user_id JOIN textbooks tb ON brh.book_id = tb.id ORDER BY brh.read_date DESC;
+
+
+insert into subject(subject_name) values
+('Amharic'),
+('English'),
+('General science'),
+('Mathematics'),
+('Career and Technical Education'),
+('Social Study'),
+('Citizenship Eduction'),
+('Information Technology'),
+('Visual and Performing Art'),
+('Health and Physical Education'),
+('Biology'),
+('Chemistry'),
+('Civics'),
+('Geography'),
+('Physics'),
+('Basic Technical Drawing'),
+('Economics'),
+('General Business');
